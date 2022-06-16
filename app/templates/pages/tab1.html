@@ -454,12 +454,12 @@ animation:spin 4s linear infinite;
                                         {% for result in ANCvisits %}
                                         <tr>
                                             <td>{{ forloop.counter }}</td>
-                                            <td>{{ result.3 }}</td>
-                                            
                                             <td>{{ result.0 }}</td>
                                             
                                             <td>{{ result.1 }}</td>
-                                            <td>{{ result.2 }}%</td>
+                                            
+                                            <td>{{ result.2 }}</td>
+                                            <td>{{ result.3}}%</td>
                                             
                                         </tr>
                                         
@@ -636,7 +636,7 @@ animation:spin 4s linear infinite;
                                 
                               <div class="card">
                                 <div class="card-body" style="    height: 568px; overflow-y: scroll;">
-                                  <h5 class="card-title" >Falana Tiwkana Table</h5>
+                                  <h5 class="card-title" >Preganant Women Visited Table (District Wise)</h5>
                       
                                   <!-- Default Table -->
                                   
@@ -645,22 +645,22 @@ animation:spin 4s linear infinite;
                                         <tr class="winner__table">
                                             <th scope="col">Sr. No</th>
                                             <th scope="col">Districts</th>
-                                            <th scope="col">Total Condom Users</th>
-                                            <th scope="col">Persons Supplied Condoms</th>
-                                            <th scope="col">% Condom Users </th>
+                                            <th scope="col">Pregnant Women Visited</th>
+                                            <th scope="col">Total Pregnant Women</th>
+                                            <th scope="col">% Pregnant Women Visited </th>
                                         </tr>
                                       </thead>
                                       <tbody>
                                         
-                                {% for result in cond %}
+                                {% for result in preg %}
                                 <tr class="winner__table">
                                   <td>{{ forloop.counter }}</td>
                                   <td>{{ result.0 }}</td>
                                   
                                   <td>{{ result.1 }}</td>
                                   
-                                  <td>{{ result.3 }}</td>
-                                  <td>{{ result.2 }}%</td>
+                                  <td>{{ result.2 }}</td>
+                                  <td>{{ result.3 }}%</td>
                                   
                                 </tr>
                               

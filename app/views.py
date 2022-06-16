@@ -60,6 +60,9 @@ def tabular(request):
     new_natal_death=[]
     maternal_deaths=[]
     mmr=[]
+    preg_Women_visited=[]
+    total_pregnant_women=[]
+    perc_pregwomen=[]
     totaldeathslist=[]
     total_of_deliveries=[]
     # for second graph
@@ -90,15 +93,17 @@ def tabular(request):
              Sum('sixtofiveninechildrenhavingmaucdone'),Sum('suppliedwithcondoms'), Sum('condomusers'), Sum('sixtofiveninemonthchildren'),\
              Sum('lessthanfiveyearchildrenprovidedsachet'), Sum('lessthanfiveyearchildren'),\
              Sum('womendeliveredancvisits'),Sum('totalofdeliveries'),Sum('noofnewbornimmunestarted'), Sum('deathmorethanoneweek'), Sum('newnataldeaths'),Sum('infantsdeaths'), Sum('maternaldeaths'), Sum('alldeaths'),\
-             Sum('newfamilyplanningclients'),Sum('followupcasesforfamilyplanning'),Sum('eligiblecouples'), Sum('modernmethodusers'), Sum('othermoderncontraceptiveusers'))
+             Sum('newfamilyplanningclients'),Sum('followupcasesforfamilyplanning'),Sum('eligiblecouples'), Sum('modernmethodusers'), Sum('othermoderncontraceptiveusers'),\
+             Sum('totalpregnantwomen'), Sum('totalpregnantwomenvisited'))
         try:
             no_of_less_thanfive_children_sachet_provided.append(float(report['lessthanfiveyearchildrenprovidedsachet__sum']))
             supplied_condom.append(float(report['suppliedwithcondoms__sum']))
 
             no_of_modernused.append(float(report['modernmethodusers__sum']))
             othermodernused.append(float(report['othermoderncontraceptiveusers__sum']))
-            
-
+            total_pregnant_women.append(float(report['totalpregnantwomen__sum']))
+            preg_Women_visited.append(float(report['totalpregnantwomenvisited__sum']))
+            no_of_modernused.append(float(report['modernmethodusers__sum']))
             newfamilyplanning.append(float(report['newfamilyplanningclients__sum']))
             followupfamplanning.append(float(report['followupcasesforfamilyplanning__sum']))
             eligible_couples.append(float(report['eligiblecouples__sum']))
@@ -122,7 +127,8 @@ def tabular(request):
             no_of_less_thanfive_children_sachet_provided.append(0)
             no_of_modernused.append(0)
             othermodernused.append(0)
-            
+            total_pregnant_women.append(0)
+            preg_Women_visited.append(0)
             newfamilyplanning.append(0)
             followupfamplanning.append(0)
             eligible_couples.append(0)
@@ -171,6 +177,7 @@ def tabular(request):
     for x in range(len(district_list)):
         perc_Bf.append(round(no_of_new_born_started_breastfeeding[x]/(no_of_live_births[x]+0.0000000000001)*100,2))
     
+    
     total_live_births= sum(no_of_live_births)
     total_live_births= int(total_live_births)
     sum_alldeaths= sum(totaldeathslist)
@@ -203,13 +210,20 @@ def tabular(request):
     sachet=[]
     for x in range(len(district_list)):
         sachet.append(round(no_of_less_thanfive_children_sachet_provided[x]/(no_of_less_than_fiveyear_children[x]+0.0000000000001)*100,2))
+    for x in range(len(district_list)):
+        perc_pregwomen.append(round(preg_Women_visited[x]/(total_pregnant_women[x]+0.000000001)*100,2))
     chartlist=zip(maternal_deaths,no_of_live_births,infants_deaths, district_list)
     ziplist=zip(maternal_deaths,no_of_live_births,infants_deaths, district_list,totaldeathslist, imr, mmr, new_natal_death, deaths_more_than_one_week)
     immun=zip(district_list,no_of_new_born_whose_immune_started, no_of_live_births,perc_no_of_newborn_immune_started)
     maucdone=zip(district_list,no_of_childrenhaving_maucdone, no_of_sixto_fivenine_childern,percMaucDone)
     microsachet=zip(district_list,no_of_less_thanfive_children_sachet_provided, no_of_less_than_fiveyear_children,sachet)
     ANCvisits=zip(district_list,women_delivered_anc_visits, total_of_deliveries,perc_ANC)
+    preg=zip(district_list,preg_Women_visited,total_pregnant_women,perc_pregwomen)
     context = {
+        'preg_Women_visited':preg_Women_visited,
+        'total_pregnant_women':total_pregnant_women,
+        'perc_pregwomen':perc_pregwomen,
+        'preg':preg,
         'ANCvisits':ANCvisits,
         'microsachet':microsachet,
         'maucdone':maucdone,
@@ -326,7 +340,8 @@ def dashboard(request):
     totalfamplanning=[]
     eligible_couples=[]
     perc_familyplanning=[]
-    
+    preg_Women_visited=[]
+    total_pregnant_women=[]
     no_of_modernused=[]
     othermodernused=[]
     totalmodernused=[]
@@ -371,10 +386,12 @@ def dashboard(request):
              Sum('sixtofiveninechildrenhavingmaucdone'),Sum('suppliedwithcondoms'), Sum('condomusers'), Sum('sixtofiveninemonthchildren'),\
              Sum('lessthanfiveyearchildrenprovidedsachet'), Sum('lessthanfiveyearchildren'),\
              Sum('womendeliveredancvisits'),Sum('totalofdeliveries'),Sum('noofnewbornimmunestarted'), Sum('deathmorethanoneweek'), Sum('newnataldeaths'),Sum('infantsdeaths'), Sum('maternaldeaths'), Sum('alldeaths'),\
-             Sum('newfamilyplanningclients'),Sum('followupcasesforfamilyplanning'),Sum('eligiblecouples'), Sum('modernmethodusers'), Sum('othermoderncontraceptiveusers'))
+             Sum('newfamilyplanningclients'),Sum('followupcasesforfamilyplanning'),Sum('eligiblecouples'), Sum('modernmethodusers'), Sum('othermoderncontraceptiveusers'),\
+             Sum('totalpregnantwomen'), Sum('totalpregnantwomenvisited'))
         try:
             supplied_condom.append(float(report['suppliedwithcondoms__sum']))
-
+            total_pregnant_women.append(float(report['totalpregnantwomen__sum']))
+            preg_Women_visited.append(float(report['totalpregnantwomenvisited__sum']))
             no_of_modernused.append(float(report['modernmethodusers__sum']))
             othermodernused.append(float(report['othermoderncontraceptiveusers__sum']))
             
@@ -401,7 +418,8 @@ def dashboard(request):
         except TypeError:
             no_of_modernused.append(0)
             othermodernused.append(0)
-            
+            total_pregnant_women.append(0)
+            preg_Women_visited.append(0)
             newfamilyplanning.append(0)
             followupfamplanning.append(0)
             eligible_couples.append(0)
@@ -421,7 +439,11 @@ def dashboard(request):
             no_of_lessthanfive_chidlren_sachet_provided.append(0)
             no_of_less_than_fiveyear_children.append(0)
             no_of_new_born_whose_immune_started.append(0)
-    
+    perc_pregwomen=[]
+    for x in range(len(district_list)):
+          # declaration of the list  
+        perc_pregwomen.append(round(preg_Women_visited[x]/(total_pregnant_women[x]+0.0000000000000001)*100,2))
+
     for x in range(len(district_list)):
           # declaration of the list  
         totalmodernused.append(int(no_of_modernused[x]+othermodernused[x]))
@@ -479,7 +501,13 @@ def dashboard(request):
         perc_no_of_newborn_immune_started.append(round(no_of_new_born_whose_immune_started[x]/(no_of_live_births[x]+0.00001)*100,2))
     chartlist=zip(maternal_deaths,no_of_live_births,infants_deaths, district_list)
     ziplist=zip(maternal_deaths,no_of_live_births,infants_deaths, district_list,totaldeathslist, imr, mmr, new_natal_death, deaths_more_than_one_week)
+    preg=zip(district_list,preg_Women_visited,total_pregnant_women,perc_pregwomen)
     context = {
+        'preg_Women_visited':preg_Women_visited,
+        'total_pregnant_women':total_pregnant_women,
+        'perc_pregwomen':perc_pregwomen,
+        'preg':preg,
+
         'no_of_modernused':no_of_modernused,
         'othermodernused':othermodernused,
         'totalmodernused':totalmodernused,

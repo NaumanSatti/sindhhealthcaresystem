@@ -210,7 +210,7 @@
         <div class="col-md-12 col-lg-6">
           <div class="card-header-title">
             
-            <div class="card-title"> Condom Users.
+            <div class="card-title"> Total Pregnant Women Visited.
             </div>
         </div>    
           <div class="flip">
@@ -229,22 +229,22 @@
                               <tr>
                                 <th scope="col">Sr. No</th>
                                 <th scope="col">Districts</th>
-                                <th scope="col">Total Condom Users</th>
-                                <th scope="col">Persons Supplied Condoms</th>
-                                <th scope="col">% Condom Users </th>
+                                <th scope="col">Pregnant Women Visited</th>
+                                <th scope="col">Total Pregnant Women</th>
+                                <th scope="col">% Pregnant Women Visited </th>
                               </tr>
                             </thead>
                             <tbody>
                               
-                              {% for result in cond %}
+                              {% for result in preg %}
                               <tr>
                                   <td>{{ forloop.counter }}</td>
                                   <td>{{ result.0 }}</td>
                                   
                                   <td>{{ result.1 }}</td>
                                   
-                                  <td>{{ result.3 }}</td>
                                   <td>{{ result.2 }}</td>
+                                  <td>{{ result.3 }}%</td>
                                   
                               </tr>
                               
@@ -461,31 +461,35 @@
   }
 },
 stroke: {
-  curve: 'smooth',
+  curve: 'stepline',
   width: 2
 },
 //colors: ["#3F51B5", '#2196F3'],
 series: [{
-    name: "Infant Death",
-    data: {{infants_deaths}}
+    name: "Pregnant Women Visited",
+    color:'#C22ED0',
+    data: {{preg_Women_visited}}
   },
   {
-    name: "Live Birth",
-    data:{{no_of_live_births}}
+    name: "Total Pregnant Women",
+    color:'#5FFAE0',
+    data:{{total_pregnant_women}}
   },
   {
-    name: "IMR",
-    data: {{imr}}
+    name: "% of Pregnant Women Visited",
+    color:'#067D68',
+    data: {{perc_pregwomen}}
   }
 ],
 title: {
-  text: 'Infant Mortality Rate',
+  text: 'Total Pregnant Women Visited',
   align: 'left',
   offsetY: 25,
   offsetX: 20
 },
 subtitle: {
-  text: 'Statistics',
+  text: 'Statsis',
+  align: 'right',
   offsetY: 55,
   offsetX: 20
 },
@@ -513,7 +517,7 @@ xaxis: {
   }
 },
 legend: {
-  position: 'top',
+  position: 'bottom',
   horizontalAlign: 'right',
   offsetY: -20
 }
