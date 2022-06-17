@@ -9,6 +9,7 @@ urlpatterns = [
     path('edit_health_worker/<int:pk>', views.edit_health_worker, name='edit-health-worker'),
     path('view_my_report/<int:id>', views.view_report, name='view-report'),
     path('view_hw/<int:id>', views.view_hw, name='view-health-worker'),
+    path('view_perf/<int:id>', views.view_perf, name='view-perf'),
 
     path('dash2', views.dash2, name='dash2'),
     # profile and report  section
@@ -19,6 +20,7 @@ urlpatterns = [
     path('sendsms/<int:id>', views.sendsms, name='sendsms'),
     path('delete_report/<int:id>', views.delete_report, name='delete-report'),
     path('edit_report/<int:id>', views.edit_report, name='edit-report'),
+    path('performance', views.performance, name='performance'),
     
 
     # visuliazation urls

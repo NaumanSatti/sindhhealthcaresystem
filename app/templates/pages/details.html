@@ -73,12 +73,13 @@
                   <tbody>
                     <script>
   
-                          x="HEllo WORLS";
+                          
                           var s='{{total}}';
                           var s1=parseInt(s);
                           
                           A="Hello";
                           var x=0;
+                          const idss=[];
                           
                     </script>  
                       {% for hw in healthworkers%}
@@ -96,15 +97,23 @@
                         <td>{{hw.isRetired}}</td>
                         
                         <td>
-                          <a href="{% url 'view-health-worker' hw.pk %}" type="button" id="xyz" class="btn btn-danger"><i class="bi bi-eye"></i></a>
+                          <a href="{% url 'view-health-worker' hw.pk %}" type="button" id="xyz" class="hello"><i class="bi bi-eye"></i></a>
                           <script>
                            x='{{forloop.counter}}';
+                           y=parseInt(x);
                            var a='{{hw.age}}';
                            var b= parseInt(a);
-                           console.log(b);
+                           
                            if (b>=59){
-                            document.getElementById("xyz").setAttribute('id', x);
+                            var e = document.getElementById("xyz");
+                            e.id = "retire_"+x;
+                          idss[y]=e.id;
 
+                           }
+                           else{
+                            var e = document.getElementById("xyz");
+                            e.id = "notretire_"+x;
+                          idss[y]=e.id;
                            }
                           </script>
                           
@@ -113,8 +122,22 @@
                       
                       {% endfor %}
                       <script>
-                         var text = s1.toString();
-                         document.getElementById(text).className='btn btn-primary';   
+                        var a1=1;
+                        console.log(idss);   
+                        for(a1=1; a1<s1+1;a1++){
+
+                            var b= a1.toString();
+                            if(idss[a1]=="retire_"+b){
+
+                              document.getElementById(idss[a1]).className='btn btn-danger';   
+
+                            }
+                            else{
+                            document.getElementById(idss[a1]).className='btn btn-primary';
+
+                            }
+                          }
+                        
                           
                             
                       </script>

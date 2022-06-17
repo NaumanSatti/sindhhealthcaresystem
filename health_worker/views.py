@@ -63,31 +63,31 @@ def sendSMS(name, district, year, phone,Body):
         body=body,
         to=phone
     )
-def month_getter():
-    x=datetime.today().strftime('%m')
-    if x=='01':
+def month_getter(x):
+    
+    if x=='01' or x==1:
         return 'January'
-    if x=='02':
+    if x=='02' or x==2:
         return 'February'
-    if x=='03':
+    if x=='03' or x==3:
         return 'March'
-    if x=='04':
+    if x=='04' or x==4:
         return 'April'
-    if x=='05':
+    if x=='05' or x==5:
         return 'May'
-    if x=='06':
+    if x=='06'or x==6:
         return 'June'
-    if x=='07':
+    if x=='07' or x==7:
         return 'July'
-    if x=='08':
+    if x=='08' or x==8:
         return 'August'
-    if x=='09':
+    if x=='09' or x==9:
         return 'September'
-    if x=='10':
+    if x=='10' or x==10:
         return 'October'
-    if x=='11':
+    if x=='11' or x==11:
         return 'November'
-    if x=='12':
+    if x=='12' or x==12:
         return 'December'
 
 
@@ -99,8 +99,19 @@ def user_check(user):
     return user.is_staff
 
 # Create your views here.
-
-
+@login_required(login_url='/login')
+def performance(request):
+    if request.user.is_superuser:
+        healthworkers = HealthWorker.objects.all()
+    else:
+        healthworkers = HealthWorker.objects.filter(user = request.user)
+    
+    print(request.user)
+    context = {
+        
+        'healthworkers': healthworkers
+    }
+    return render(request, 'pages/performance.html', context)
 @login_required(login_url='/login')
 def profile(request):
     try:
@@ -158,8 +169,8 @@ def details(request):
 
 @login_required(login_url='/login')
 def data_entry(request):
-    
-    x=month_getter()
+    y=datetime.today().strftime('%m')
+    x=month_getter(y)
     healthworker = HealthWorker.objects.get(user=request.user)
     isStaff=request.user.is_staff
     current_user=request.user
@@ -223,9 +234,9 @@ def dash2(request):
 
 @login_required(login_url='/login')
 def my_reports(request):
+    y=datetime.today().strftime('%m')
+    x=month_getter(y)
     
-    x=month_getter()
-  
 
     healthworker = HealthWorker.objects.get(user=request.user)
     isStaff=request.user.is_staff
@@ -341,6 +352,56 @@ def view_hw(request, id):
     }
     return render(request,'pages/view-healthworker.html', context)
 
+@login_required(login_url='/login')
+def view_perf(request, id):
+    healthworker = HealthWorker.objects.get(pk = id)
+    current_user=healthworker.user_id
+    
+    
+    reptime=[]
+    monthname=[]
+    import time
+    x = 12
+    now = time.localtime()
+    reptime.append([time.localtime(time.mktime((now.tm_year, now.tm_mon - n, 1, 0, 0, 0, 0, 0, 0)))[:2] for n in range(x)])
+    ps=[]
+    submitted=reptime[0]
+    l = submitted
+    year = [x for x,y in l]
+    month = [y for x,y in l]
+    criteria=[]
+    for i in range (len(month)):
+        monthname.append(month_getter(month[i]))
+    
+    for i in range (len(month)):
+        query="""SELECT COUNT(datesubmitted) FROM health_worker_report WHERE monthname(datesubmitted)= %s and year(datesubmitted)= %s and user_id= %s"""
+        tuple1 = (monthname[i], year[i], current_user)
+        c=connection.cursor()
+        
+        c.execute(query,tuple1)
+        ps.append(c.fetchone())
+        no_of_rep=[]
+    for i in range(len(ps)):
+        no_of_rep.append(tup_to_int(ps[i]))
+    
+    for i in range(len(ps)):
+        if no_of_rep[i]==0:
+            criteria.append("NO")
+        else:
+            criteria.append("YES")
+        
+    print(criteria)
+
+    data=zip(monthname,year,no_of_rep,criteria) 
+    context = {
+        'HW': healthworker,
+        'data':data
+        
+    }
+    
+   
+    
+    return render(request,'pages/view-perf.html', context)
 
 
 
